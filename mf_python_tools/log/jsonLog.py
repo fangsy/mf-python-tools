@@ -112,10 +112,13 @@ class JSONLOGFormatter(logging.Formatter):
             if len(m_data) >0:
                 data['msg_ext'] = m_data
         elif isinstance(data, list):
-            data.append(m_data)
+            if len(m_data) >0:
+                data.append(m_data)
         else:
             pass
         message['data'] = data
+        if 'file_no' in message:
+            del message['file_no']
         return message
 
     def get_debug_fields(self, record):
@@ -137,7 +140,7 @@ class JSONLOGFormatter(logging.Formatter):
             'host': self.get_host(record),
             'level': record.levelname,
             'event': self.get_event(record),
-            'file_line': record.pathname +" " +str(record.funcName) +": " + str(record.lineno),
+            'file_line': self.get_file_no(record),
             'msg': '',
             # 'data':  None,
         }
@@ -160,6 +163,11 @@ class JSONLOGFormatter(logging.Formatter):
             event = record.event
         return event
 
+    def get_file_no(self,record):
+        file =  record.pathname +" " +str(record.funcName) +": " + str(record.lineno)
+        if hasattr(record, 'file_no'):
+            file = record.file_no
+        return file
 
     def get_source_id(self, record):
         source_id = ""

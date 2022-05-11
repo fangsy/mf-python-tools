@@ -5,25 +5,25 @@ MF some tools for Python
 
 `pip install mf-python-tools`
 
-## jsonr日志
+## json日志
 
 ### 说明
 
 #### 使用mfAdapter
 ```
 import logging
-from mf_python_tools import log_init,JSONLOGFormatter,mfAdapter
+from mf_python_tools import log_init,JSONLOGFormatter,mfAdapter,fileNo
 
 log_init()
 
-logger = mfAdapter(logging.getLogger(__name__))
+logger = mfAdapter(logging.getLogger(__name__),source="tasks",source_random=True)
 
 logger.info('this is log..',event='log.init')
 
-## {"datetime": "2021-12-10T04:00:52.952", "source_id": "", "source": "", "host": "fsy-work", "level": "INFO", "event": "log.init", "file_line": "/server/mf-python-tools/mf_python_tools/log/mfAdapter.py info: 8", "msg": "logger this is info........", "data": {}}
+## {"datetime": "2021-12-10T04:00:52.952", "source_id": "pUHOUUjRl8SFE63lBqcnLmRzsaSOgzO7", "source": "tasks", "host": "fsy-work", "level": "INFO", "event": "log.init", "file_line": "/mnt/sdb/tmp/testCeleryLog/tasks.py 21: add", "msg": "logger this is info........", "data": {}}
 ```
 
-#### 准确定位行数
+#### 使用clientLogger
 
 ```
 import logging
@@ -54,7 +54,7 @@ logger.info('ddddddddddddddddddddddddddddddddddd','mmmmm',extra={'event':'celery
 
 ```
 
-### 说明
+### 参数
 
 #### LOG_DEFAULT_CONFIG
 

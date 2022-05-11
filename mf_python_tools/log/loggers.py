@@ -1,7 +1,7 @@
 
 class clientLogger(object):
 
-    def __init__(self, source=None, host=None, source_random=None) -> None:
+    def __init__(self, source=None, host=None, source_random=None, file_no=None) -> None:
         """扩展logger类
             @source          日志来源
             @host            日志主机字段
@@ -21,9 +21,15 @@ class clientLogger(object):
         self.source= source
         self.source_random= source_random
         self.host = host
+        self.file_no = file_no
 
-    def _extra_info(self,kwargs, event=None, source=None, source_id=None, source_random=None, host=None, data=None):
+    def _extra_info(self,kwargs, event=None, source=None, source_id=None, source_random=None, host=None,file_no=None, data=None):
         extra_info = {}
+        if file_no is not None:
+            extra_info['file_no'] = file_no
+        else:
+            if self.file_no is not None:
+                extra_info['file_no'] = self.file_no
         if event is not None:
             extra_info['event'] = event
         if source_id is not None:
@@ -73,15 +79,15 @@ class clientLogger(object):
             re_kwargs = kwargs
         return re_kwargs
 
-    def handle(self, kwargs, event, source, source_id, source_random, host, data):
+    def handle(self, kwargs, event, source, source_id, source_random, host, file_no, data):
         kwargs = self._kwargs_extra(kwargs)
-        kwargs = self._extra_info(kwargs, event, source, source_id, source_random, host, data)
+        kwargs = self._extra_info(kwargs, event, source, source_id, source_random, host,file_no, data)
         return kwargs
 
-    def data(self, msg, *args, event=None, source=None, source_id=None, source_random=None, host=None, data=None, **kwargs):
-        kwargs = self.handle(kwargs, event, source, source_id, source_random, host, data)
+    def data(self, msg, *args, event=None, source=None, source_id=None, source_random=None, host=None,file_no=None, data=None, **kwargs):
+        kwargs = self.handle(kwargs, event, source, source_id, source_random, host, file_no,data)
         return (msg, args, kwargs)
 
-    def exception(self,msg, *args, event=None, source=None, source_id=None, source_random=None, host=None, data=None, exc_info=True, **kwargs):
-        kwargs = self.handle(kwargs, event, source, source_id, source_random, host, data)
+    def exception(self,msg, *args, event=None, source=None, source_id=None, source_random=None, host=None,file_no=None, data=None, exc_info=True, **kwargs):
+        kwargs = self.handle(kwargs, event, source, source_id, source_random, host, file_no, data)
         return (msg, args, exc_info, kwargs)

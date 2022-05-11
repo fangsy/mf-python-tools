@@ -1,6 +1,12 @@
 import logging
 from .loggers import clientLogger
 
+from inspect import getframeinfo,stack
+def fileNo():
+    # logging.info(stack())
+    caller = getframeinfo(stack()[1][0])
+    return caller.filename+' '+ str(caller.lineno) +': '+ caller.function
+
 class mfAdapter(logging.LoggerAdapter):
 
     def __init__(self, logger, extra=None, source=None, host=None, source_random=None) -> None:
@@ -20,33 +26,39 @@ class mfAdapter(logging.LoggerAdapter):
         self.source_random= source_random
         self.host = host
         self.client = clientLogger(source, host, source_random)
+        self.logger = logger
 
-    def debug(self, msg, *args, event=None, source=None, source_id=None, source_random=None, host=None, data=None, **kwargs):
+
+
+    def debug(self, msg, *args, event=None, source=None, source_id=None, source_random=None, host=None,file_no=None, data=None, **kwargs):
         """debug
         """
-        kwargs = self.client.handle(kwargs, event, source, source_id, source_random, host, data)
-        super(mfAdapter, self).debug(msg, *args, **kwargs)
+        self._print('debug',msg, *args, event=event, source=source, source_id=source_id, source_random=source_random, host=host,file_no=file_no, data=data,**kwargs)
 
-    def info(self, msg, *args, event=None, source=None, source_id=None, source_random=None, host=None, data=None, **kwargs):
-        kwargs = self.client.handle(kwargs, event, source, source_id, source_random, host, data)
-        super(mfAdapter, self).info(msg, *args, **kwargs)
 
-    def warning(self, msg, *args, event=None, source=None, source_id=None, source_random=None, host=None, data=None, **kwargs):
-        kwargs = self.client.handle(kwargs, event, source, source_id, source_random, host, data)
-        super(mfAdapter, self).warning(msg, *args, **kwargs)
+    def info(self, msg, *args, event=None, source=None, source_id=None, source_random=None, host=None,file_no=None, data=None, **kwargs):
+        self._print('info',msg, *args, event=event, source=source, source_id=source_id, source_random=source_random, host=host,file_no=file_no, data=data,**kwargs)
 
-    def warn(self, msg, *args, event=None, source=None, source_id=None, source_random=None, host=None, data=None, **kwargs):
-        kwargs = self.client.handle(kwargs, event, source, source_id, source_random, host, data)
-        super(mfAdapter, self).warn(msg, *args, **kwargs)
 
-    def error(self, msg, *args, event=None, source=None, source_id=None, source_random=None, host=None, data=None, **kwargs):
-        kwargs = self.client.handle(kwargs, event, source, source_id, source_random, host, data)
-        super(mfAdapter, self).error(msg, *args, **kwargs)
+    def warning(self, msg, *args, event=None, source=None, source_id=None, source_random=None, host=None,file_no=None, data=None, **kwargs):
+        self._print('warning',msg, *args, event=event, source=source, source_id=source_id, source_random=source_random, host=host,file_no=file_no, data=data,**kwargs)
 
-    def exception(self, msg, *args, event=None, source=None, source_id=None, source_random=None, host=None, data=None, exc_info=True, **kwargs):
-        kwargs = self.client.handle(kwargs, event, source, source_id, source_random, host, data)
-        super(mfAdapter, self).exception(msg, *args, exc_info, **kwargs)
+    def warn(self, msg, *args, event=None, source=None, source_id=None, source_random=None, host=None,file_no=None, data=None, **kwargs):
+        self._print('warn',msg, *args, event=event, source=source, source_id=source_id, source_random=source_random, host=host,file_no=file_no, data=data,**kwargs)
 
-    def critical(self, msg, *args, event=None, source=None, source_id=None, source_random=None, host=None, data=None, **kwargs):
-        kwargs = self.client.handle(kwargs, event, source, source_id, source_random, host, data)
-        super(mfAdapter, self).critical(msg, *args, **kwargs)
+    def error(self, msg, *args, event=None, source=None, source_id=None, source_random=None, host=None,file_no=None, data=None, **kwargs):
+        self._print('error',msg, *args, event=event, source=source, source_id=source_id, source_random=source_random, host=host,file_no=file_no, data=data,**kwargs)
+
+    def exception(self, msg, *args, event=None, source=None, source_id=None, source_random=None, host=None,file_no=None, data=None, exc_info=True, **kwargs):
+        self._print('exception',msg, *args, event=event, source=source, source_id=source_id, source_random=source_random, host=host,file_no=file_no, data=data,**kwargs)
+
+    def critical(self, msg, *args, event=None, source=None, source_id=None, source_random=None, host=None,file_no=None, data=None, **kwargs):
+        self._print('critical',msg, *args, event=event, source=source, source_id=source_id, source_random=source_random, host=host,file_no=file_no, data=data,**kwargs)
+
+    def _print(self,fun,msg, *args, event=None, source=None, source_id=None, source_random=None, host=None,file_no=None, data=None, **kwargs):
+        if file_no is None:
+            file_no=fileNo()
+        md = self.client.data( msg, *args, event=event, source=source, source_id=source_id, source_random=source_random, host=host,file_no=file_no, data=data,**kwargs)
+        if hasattr(self.logger,fun):
+            getattr(self.logger, fun, '')(md[0], *md[1], **md[2])
+
