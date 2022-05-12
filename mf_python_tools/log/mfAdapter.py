@@ -12,7 +12,7 @@ class mfAdapter(logging.LoggerAdapter):
     def __init__(self, logger, extra=None, source=None, host=None, source_random=None) -> None:
         """扩展logger类
             logger          logger示例
-                            import loggging
+                            import logging
                             from mf_python_tools import log_init,JSONLOGFormatter,mfAdapter
                             log_init()
                             logger = mfAdapter(logging.getLogger(__name__))
@@ -37,22 +37,27 @@ class mfAdapter(logging.LoggerAdapter):
 
 
     def info(self, msg, *args, event=None, source=None, source_id=None, source_random=None, host=None,file_no=None, data=None, **kwargs):
+        """info"""
         self._print('info',msg, *args, event=event, source=source, source_id=source_id, source_random=source_random, host=host,file_no=file_no, data=data,**kwargs)
 
-
     def warning(self, msg, *args, event=None, source=None, source_id=None, source_random=None, host=None,file_no=None, data=None, **kwargs):
+        """warning"""
         self._print('warning',msg, *args, event=event, source=source, source_id=source_id, source_random=source_random, host=host,file_no=file_no, data=data,**kwargs)
 
     def warn(self, msg, *args, event=None, source=None, source_id=None, source_random=None, host=None,file_no=None, data=None, **kwargs):
+        """warn"""
         self._print('warn',msg, *args, event=event, source=source, source_id=source_id, source_random=source_random, host=host,file_no=file_no, data=data,**kwargs)
 
     def error(self, msg, *args, event=None, source=None, source_id=None, source_random=None, host=None,file_no=None, data=None, **kwargs):
+        """error"""
         self._print('error',msg, *args, event=event, source=source, source_id=source_id, source_random=source_random, host=host,file_no=file_no, data=data,**kwargs)
 
     def exception(self, msg, *args, event=None, source=None, source_id=None, source_random=None, host=None,file_no=None, data=None, exc_info=True, **kwargs):
+        """exception"""
         self._print('exception',msg, *args, event=event, source=source, source_id=source_id, source_random=source_random, host=host,file_no=file_no, data=data,**kwargs)
 
     def critical(self, msg, *args, event=None, source=None, source_id=None, source_random=None, host=None,file_no=None, data=None, **kwargs):
+        """critical"""
         self._print('critical',msg, *args, event=event, source=source, source_id=source_id, source_random=source_random, host=host,file_no=file_no, data=data,**kwargs)
 
     def _print(self,fun,msg, *args, event=None, source=None, source_id=None, source_random=None, host=None,file_no=None, data=None, **kwargs):

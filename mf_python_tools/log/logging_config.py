@@ -55,19 +55,19 @@ LOG_DEFAULT_CONFIG = {
             'level': 'INFO',
             'propagate': False,
         },
-        'cement': {
-            'handlers': ['consoleJson','file','fileError'],
+        'root': {
+            'handlers': ['consoleJson',],
             'level': 'INFO',
             'propagate': False,
         },
-        'celery': {
-            'handlers': ['consoleJson','file','fileError'],
+        'print': {
+            'handlers': ['consoleJson',],
             'level': 'INFO',
             'propagate': False,
         },
     },
     "root": {
-            'handlers': ['consoleJson'],
+            'handlers': ['consoleJson',],
             'level': 'INFO',
             'propagate': False,
     }
