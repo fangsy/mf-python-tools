@@ -5,7 +5,7 @@ with open('README.md', 'r') as f:
 
 setup(
     name='mf-python-tools',
-    version='0.3',
+    version='0.4',
     description='MF some tools for Python',
     # long_description=readme,
     keywords=['json', 'logging'],

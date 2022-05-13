@@ -65,6 +65,21 @@ LOG_DEFAULT_CONFIG = {
             'level': 'INFO',
             'propagate': False,
         },
+        'cement': {
+            'handlers': ['consoleJson',],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+        'celery': {
+            'handlers': ['consoleJson',],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+        'celery.work': {
+            'handlers': ['consoleJson',],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
     },
     "root": {
             'handlers': ['consoleJson',],
