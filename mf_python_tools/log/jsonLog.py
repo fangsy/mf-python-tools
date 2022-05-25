@@ -49,7 +49,7 @@ class JSONLOGFormatter(logging.Formatter):
 
     @classmethod
     def format_timestamp(cls, time):
-        return datetime.utcfromtimestamp(time).isoformat(timespec='milliseconds')
+        return datetime.fromtimestamp(time).isoformat(timespec='milliseconds')
 
     def format(self, record):
         '''组装logging格式
